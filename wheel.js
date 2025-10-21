@@ -155,31 +155,10 @@ class SpinWheel {
         ctx.lineWidth = border;
         ctx.stroke();
 
-        // Orange dots with motion blur
+        // Orange dots
         const numDots = 24;
-        const blurTrails = this.spinning ? 8 : 0; // Number of blur trail copies when spinning
-        
         for (let i = 0; i < numDots; i++) {
-            const baseAngle = (i / numDots) * 2 * Math.PI;
-            
-            // Draw motion blur trails
-            if (blurTrails > 0) {
-                for (let t = blurTrails; t > 0; t--) {
-                    const trailRotation = this.rotation - (this.rotationVelocity * t * 0.15);
-                    const a = baseAngle + trailRotation;
-                    const dx = cx + (radius + border / 2) * Math.cos(a);
-                    const dy = cy + (radius + border / 2) * Math.sin(a);
-                    
-                    ctx.beginPath();
-                    ctx.arc(dx, dy, 4, 0, 2 * Math.PI);
-                    const opacity = 1.0 * (1 - t / blurTrails); // More visible fading trail
-                    ctx.fillStyle = `rgba(196, 72, 0, ${opacity})`;
-                    ctx.fill();
-                }
-            }
-            
-            // Draw main dot
-            const a = baseAngle + this.rotation;
+            const a = (i / numDots) * 2 * Math.PI + this.rotation; // Add rotation so dots spin with wheel
             const dx = cx + (radius + border / 2) * Math.cos(a);
             const dy = cy + (radius + border / 2) * Math.sin(a);
             ctx.beginPath();
@@ -280,17 +259,11 @@ class SpinWheel {
                 easeProgress = a + (1 - Math.pow(1 - t, 3)) * (1 - a);
             }
 
-            // Track previous rotation for velocity calculation
-            this.previousRotation = this.rotation;
             this.rotation = this.startRotation + (this.targetRotation - this.startRotation) * easeProgress;
-            
-            // Calculate rotation velocity for motion blur
-            this.rotationVelocity = this.rotation - this.previousRotation;
 
             if (progress >= 1) {
                 this.rotation = this.targetRotation;
                 this.spinning = false;
-                this.rotationVelocity = 0;
                 document.getElementById('spinBtn').disabled = false;
                 this.showResult();
             }
