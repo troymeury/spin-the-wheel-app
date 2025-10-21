@@ -60,7 +60,11 @@ class SpinWheel {
     playClickIfNeeded() {
         if (!this.spinning) return;
         
+        // Throttle clicks to prevent distortion at high speeds
         const now = Date.now();
+        if (now - this.lastClickTime < this.minClickInterval) {
+            return;
+        }
         
         // Calculate which dot is currently at the top (where the pointer is)
         // The pointer is at angle -Math.PI/2 (top of wheel)
@@ -73,13 +77,9 @@ class SpinWheel {
         
         // Play click when we cross to a new dot
         if (currentDotIndex !== this.lastDotIndex) {
-            // Only click if enough time has passed since last click
-            if (now - this.lastClickTime >= this.minClickInterval) {
-                this.clickSound();
-                this.lastClickTime = now;
-            }
-            // Always update the dot index so we don't miss the next one
+            this.clickSound();
             this.lastDotIndex = currentDotIndex;
+            this.lastClickTime = now;
         }
     }
 
