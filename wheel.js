@@ -17,7 +17,7 @@ class SpinWheel {
         this.numDots = 24;
         this.lastDotIndex = -1;
         this.lastClickTime = 0;
-        this.minClickInterval = 50; // Minimum milliseconds between clicks
+        this.minClickInterval = 70; // Minimum milliseconds between clicks
         this.clickSound = this.createClickSound();
 
         this.loadMovies();
@@ -40,7 +40,7 @@ class SpinWheel {
                 gainNode.connect(audioContext.destination);
                 
                 // Short, sharp click sound
-                oscillator.frequency.value = 200;
+                oscillator.frequency.value = 600;
                 oscillator.type = 'sine';
                 
                 gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
