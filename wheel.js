@@ -37,15 +37,16 @@ class SpinWheel {
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
                 
-                // Short, sharp click sound
-                oscillator.frequency.value = 800;
-                oscillator.type = 'sine';
+                // Sharp, percussive click using square wave
+                oscillator.frequency.value = 1000;
+                oscillator.type = 'square';
                 
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+                // Very short duration with sharp attack and quick decay
+                gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.02);
                 
                 oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.05);
+                oscillator.stop(audioContext.currentTime + 0.02);
             };
         } catch (e) {
             console.warn('Web Audio API not supported, click sounds disabled');
