@@ -172,7 +172,7 @@ class SpinWheel {
                     
                     ctx.beginPath();
                     ctx.arc(dx, dy, 4, 0, 2 * Math.PI);
-                    const opacity = 0.6 * (1 - t / blurTrails); // More visible fading trail
+                    const opacity = 1.0 * (1 - t / blurTrails); // More visible fading trail
                     ctx.fillStyle = `rgba(196, 72, 0, ${opacity})`;
                     ctx.fill();
                 }
