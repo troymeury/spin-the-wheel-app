@@ -18,6 +18,8 @@ class SpinWheel {
         this.lastDotIndex = -1;
         this.lastClickTime = 0;
         this.minClickInterval = 50; // Minimum milliseconds between clicks
+        this.clickDuration = 0.03; // Duration of each click in seconds (0.05 = 50ms)
+        this.clickFrequency = 600; // Pitch of the click sound in Hz
         this.clickSound = this.createClickSound();
 
         this.loadMovies();
@@ -40,14 +42,14 @@ class SpinWheel {
                 gainNode.connect(audioContext.destination);
                 
                 // Short, sharp click sound
-                oscillator.frequency.value = 600;
+                oscillator.frequency.value = this.clickFrequency;
                 oscillator.type = 'sine';
                 
                 gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + this.clickDuration);
                 
                 oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.05);
+                oscillator.stop(audioContext.currentTime + this.clickDuration);
             };
         } catch (e) {
             console.warn('Web Audio API not supported, click sounds disabled');
