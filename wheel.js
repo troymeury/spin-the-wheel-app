@@ -139,12 +139,55 @@ class SpinWheel {
             ctx.rotate(start + slice / 2);
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            const fontSize = Math.min(20, radius / (movie.length * 0.6));
+            
+            // Calculate font size and handle long text
+            const maxTextRadius = radius * 0.55; // More padding from the edge
+            let fontSize = Math.min(20, radius / (movie.length * 0.6));
             ctx.font = `bold ${fontSize}px Georgia`;
-            ctx.fillStyle = '#000';
-            ctx.shadowColor = 'rgba(255,255,255,0.5)';
-            ctx.shadowBlur = 2;
-            ctx.fillText(movie, radius * 0.65, 0);
+            
+            // Check if text is too long and needs to wrap
+            const textWidth = ctx.measureText(movie).width;
+            const maxWidth = maxTextRadius * 1.5; // Maximum width before wrapping
+            
+            if (textWidth > maxWidth && movie.length > 15) {
+                // Split into two lines for long text
+                const words = movie.split(' ');
+                let line1 = '';
+                let line2 = '';
+                
+                // Simple split: try to split roughly in the middle
+                const midPoint = Math.ceil(words.length / 2);
+                line1 = words.slice(0, midPoint).join(' ');
+                line2 = words.slice(midPoint).join(' ');
+                
+                // If no spaces, split by character count
+                if (words.length === 1) {
+                    const mid = Math.ceil(movie.length / 2);
+                    line1 = movie.substring(0, mid);
+                    line2 = movie.substring(mid);
+                }
+                
+                // Adjust font size if still too wide
+                const line1Width = ctx.measureText(line1).width;
+                const line2Width = ctx.measureText(line2).width;
+                const maxLineWidth = Math.max(line1Width, line2Width);
+                if (maxLineWidth > maxWidth) {
+                    fontSize = fontSize * (maxWidth / maxLineWidth);
+                    ctx.font = `bold ${fontSize}px Georgia`;
+                }
+                
+                ctx.fillStyle = '#000';
+                ctx.shadowColor = 'rgba(255,255,255,0.5)';
+                ctx.shadowBlur = 2;
+                ctx.fillText(line1, maxTextRadius, -fontSize * 0.6);
+                ctx.fillText(line2, maxTextRadius, fontSize * 0.6);
+            } else {
+                // Single line text
+                ctx.fillStyle = '#000';
+                ctx.shadowColor = 'rgba(255,255,255,0.5)';
+                ctx.shadowBlur = 2;
+                ctx.fillText(movie, maxTextRadius, 0);
+            }
             ctx.restore();
         });
 
