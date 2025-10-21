@@ -12,11 +12,64 @@ class SpinWheel {
         this.pendingWinnerIndex = null;
 
         this.colors = ['#c44800', '#e28c14', '#e4720a'];
+        
+        // Click sound properties
+        this.numDots = 24;
+        this.lastDotIndex = -1;
+        this.clickSound = this.createClickSound();
 
         this.loadMovies();
         this.initEventListeners();
         this.draw();
         this.animate();
+    }
+
+    // Create a click sound using Web Audio API
+    createClickSound() {
+        try {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const audioContext = new AudioContext();
+            
+            return () => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Short, sharp click sound
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.05);
+            };
+        } catch (e) {
+            console.warn('Web Audio API not supported, click sounds disabled');
+            return () => {}; // No-op function
+        }
+    }
+
+    playClickIfNeeded() {
+        if (!this.spinning) return;
+        
+        // Calculate which dot is currently at the top (where the pointer is)
+        // The pointer is at angle -Math.PI/2 (top of wheel)
+        // Normalize rotation to 0-2π range
+        const normalizedRotation = ((this.rotation % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
+        
+        // Calculate which dot is closest to the top
+        const dotAngle = (2 * Math.PI) / this.numDots;
+        const currentDotIndex = Math.floor((normalizedRotation + dotAngle / 2) / dotAngle) % this.numDots;
+        
+        // Play click when we cross to a new dot
+        if (currentDotIndex !== this.lastDotIndex) {
+            this.clickSound();
+            this.lastDotIndex = currentDotIndex;
+        }
     }
 
     // ----- Secure randomness -----
@@ -199,7 +252,7 @@ class SpinWheel {
         ctx.stroke();
 
         // Orange dots
-        const numDots = 24;
+        const numDots = this.numDots;
         for (let i = 0; i < numDots; i++) {
             const a = (i / numDots) * 2 * Math.PI + this.rotation; // Add rotation so dots spin with wheel
             const dx = cx + (radius + border / 2) * Math.cos(a);
@@ -244,6 +297,7 @@ class SpinWheel {
         if (this.spinning || this.movies.length === 0) return;
 
         this.spinning = true;
+        this.lastDotIndex = -1; // Reset dot tracking
         document.getElementById('spinBtn').disabled = true;
         document.getElementById('result').textContent = '';
 
@@ -303,6 +357,9 @@ class SpinWheel {
             }
 
             this.rotation = this.startRotation + (this.targetRotation - this.startRotation) * easeProgress;
+
+            // Check for dot clicks during spin
+            this.playClickIfNeeded();
 
             if (progress >= 1) {
                 this.rotation = this.targetRotation;
