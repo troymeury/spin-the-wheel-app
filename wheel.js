@@ -19,7 +19,7 @@ class SpinWheel {
         this.lastClickTime = 0;
         this.minClickInterval = 50; // Minimum milliseconds between clicks
         this.clickDuration = 0.01; // Duration of each click in seconds (0.05 = 50ms)
-        this.clickFrequency = 800; // Pitch of the click sound in Hz
+        this.clickFrequency = 600; // Pitch of the click sound in Hz
         this.clickSound = this.createClickSound();
 
         this.loadMovies();
