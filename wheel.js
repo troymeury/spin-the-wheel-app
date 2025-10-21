@@ -40,7 +40,7 @@ class SpinWheel {
                 gainNode.connect(audioContext.destination);
                 
                 // Short, sharp click sound
-                oscillator.frequency.value = 400;
+                oscillator.frequency.value = 200;
                 oscillator.type = 'sine';
                 
                 gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
