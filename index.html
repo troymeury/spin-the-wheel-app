@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin the Wheel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">The Time I Got Reincarnated as a Candy Corn and Now I'm Trapped at OWNER_NAME_PLACEHOLDER's Halloween Movie Marathon</h1>
+        
+        <div class="main-content">
+            <div class="left-panel">
+                <h2>Spin the Wheel</h2>
+                <div class="movie-list" id="movieList">
+                    <!-- Movies will be dynamically added here -->
+                </div>
+                
+                <div class="add-movie">
+                    <input type="text" id="movieInput" placeholder="Enter movie name..." maxlength="50">
+                    <button id="addMovieBtn">Add Movie</button>
+                </div>
+                
+                <button id="spinBtn" class="spin-button">SPIN</button>
+                <button id="clearBtn" class="clear-button">Clear All</button>
+            </div>
+            
+            <div class="right-panel">
+                <canvas id="wheelCanvas" width="600" height="600"></canvas>
+                <div class="result" id="result"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="wheel.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Editor directories
+.vscode/
+.idea/
+
+# Node modules (if you add any build tools later)
+node_modules/
+
+# Terraform files (this is an app repo, not infrastructure)
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp

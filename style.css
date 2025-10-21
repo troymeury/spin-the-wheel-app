@@ -1,0 +1,261 @@
+@import url('https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    background-color: #000000;
+    background-image: url('${bg_image_url}');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #c44800;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0px;
+    position: relative;
+    z-index: 1;
+}
+
+.title {
+    font-family: 'Metal Mania';
+    font-size: 3em;
+    text-align: center;
+    color: #f3a61d;
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 15px;
+    line-height: 1.3;
+    text-shadow: 3px 3px 8px #000;
+}
+
+.main-content {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    justify-content: center;
+/*    background: linear-gradient(to right, rgba(0, 0, 0) 0%, rgba(0, 0, 0) 50%, transparent 85%); */
+    background: rgba(0, 0, 0, 0.65);
+    border: 2px solid #c44800;
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.left-panel {
+    font-family: 'Metal Mania';
+    width: 400px;
+}
+
+.left-panel h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #f3a61d;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.movie-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    background: rgba(255, 140, 0, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.movie-item {
+    color: #000;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.movie-item:hover {
+    transform: translateX(5px);
+}
+
+.movie-item button {
+    padding: 5px 10px;
+    background: #000;
+    color: #c44800;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.movie-item button:hover {
+    transform: scale(1.05);
+}
+
+.add-movie {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.add-movie input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #e28c14;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #e28c14;
+    font-size: 1em;
+    font-family: 'Georgia', serif;
+}
+
+.add-movie input::placeholder {
+    color: rgba(255, 140, 0, 0.5);
+}
+
+.add-movie button {
+    padding: 12px 20px;
+    background: #e28c14;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.add-movie button:hover {
+    transform: scale(1.05);
+}
+
+.spin-button {
+    width: 100%;
+    padding: 20px;
+    background: #c44800;
+    color: #000;
+    border: 3px solid #000;
+    border-radius: 10px;
+    font-size: 1.8em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+    font-family: 'Georgia', serif;
+}
+
+.spin-button:hover:not(:disabled) {
+    transform: scale(1.05);
+}
+
+.spin-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.clear-button {
+    width: 100%;
+    padding: 12px;
+    background: #f3a61d;
+    color: #000000;
+    border: 3px solid #000;
+    border-radius: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Georgia', serif;
+}
+
+.clear-button:hover {
+    transform: scale(1.05);
+}
+
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#wheelCanvas {
+    background: transparent;
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.3));
+}
+
+.result {
+    font-size: 2em;
+    font-weight: bold;
+    color: #c44800;
+    text-align: center;
+    min-height: 60px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #c44800;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 600px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.movie-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.movie-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+}
+
+.movie-list::-webkit-scrollbar-thumb {
+    background: #c44800;
+    border-radius: 5px;
+}
+
+.movie-list::-webkit-scrollbar-thumb:hover {
+    background: #ff6600;
+}
+
+@media (max-width: 1200px) {
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .title {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 1.5em;
+    }
+    
+    .left-panel {
+        width: 90%;
+    }
+    
+    #wheelCanvas {
+        width: 90vw;
+        height: 90vw;
+        max-width: 500px;
+        max-height: 500px;
+    }
+}
