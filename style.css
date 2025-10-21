@@ -9,7 +9,7 @@
 body {
     font-family: 'Georgia', serif;
     background-color: #000000;
-    background-image: url('${bg_image_url}');
+    background-image: url('BACKGROUND_IMAGE_URL_PLACEHOLDER');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
