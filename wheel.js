@@ -16,6 +16,8 @@ class SpinWheel {
         // Click sound properties
         this.numDots = 24;
         this.lastDotIndex = -1;
+        this.lastClickTime = 0;
+        this.minClickInterval = 30; // Minimum milliseconds between clicks
         this.clickSound = this.createClickSound();
 
         this.loadMovies();
@@ -37,16 +39,15 @@ class SpinWheel {
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
                 
-                // Sharp, percussive click using square wave
-                oscillator.frequency.value = 1000;
-                oscillator.type = 'square';
+                // Short, sharp click sound
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
                 
-                // Very short duration with sharp attack and quick decay
-                gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.02);
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
                 
                 oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.02);
+                oscillator.stop(audioContext.currentTime + 0.05);
             };
         } catch (e) {
             console.warn('Web Audio API not supported, click sounds disabled');
@@ -56,6 +57,12 @@ class SpinWheel {
 
     playClickIfNeeded() {
         if (!this.spinning) return;
+        
+        // Throttle clicks to prevent distortion at high speeds
+        const now = Date.now();
+        if (now - this.lastClickTime < this.minClickInterval) {
+            return;
+        }
         
         // Calculate which dot is currently at the top (where the pointer is)
         // The pointer is at angle -Math.PI/2 (top of wheel)
@@ -70,6 +77,7 @@ class SpinWheel {
         if (currentDotIndex !== this.lastDotIndex) {
             this.clickSound();
             this.lastDotIndex = currentDotIndex;
+            this.lastClickTime = now;
         }
     }
 
