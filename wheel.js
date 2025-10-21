@@ -17,7 +17,7 @@ class SpinWheel {
         this.numDots = 24;
         this.lastDotIndex = -1;
         this.lastClickTime = 0;
-        this.minClickInterval = 30; // Minimum milliseconds between clicks
+        this.minClickInterval = 50; // Minimum milliseconds between clicks
         this.clickSound = this.createClickSound();
 
         this.loadMovies();
