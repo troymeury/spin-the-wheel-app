@@ -115,7 +115,7 @@ class SpinWheel {
         if (saved) {
             this.movies = JSON.parse(saved);
         } else {
-            this.movies = ['The Worst Witch','Winnie the Pooh Blood and Honey 2','Shaun of the Dead','Zombie Land','Scary Movie 1','Vampires suck','Zombeavers','Slotherhouse'];
+            this.movies = ['The Worst Witch','Winnie the Pooh Blood and Honey 2','Shaun of the Dead','Zombie Land','Scary Movie 1','Vampires suck','Zombeavers'];
             this.saveMovies();
         }
         this.updateMovieList();
