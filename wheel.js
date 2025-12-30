@@ -20,7 +20,8 @@ class SpinWheel {
             secondaryAccent: '#e28c14',
             highlightColor: '#f3a61d',
             bgColor: '#000000',
-            textColor: '#c44800'
+            textColor: '#c44800',
+            sliceTextColors: ['#000000', '#000000', '#000000']  // Text color for each slice
         };
 
         // Theme definitions
@@ -35,7 +36,8 @@ class SpinWheel {
                     secondaryAccent: '#e28c14',
                     highlightColor: '#f3a61d',
                     bgColor: '#000000',
-                    textColor: '#c44800'
+                    textColor: '#c44800',
+                    sliceTextColors: ['#000000', '#000000', '#000000']
                 }
             },
             christmas: {
@@ -43,12 +45,13 @@ class SpinWheel {
                 colors: {
                     sliceColor1: '#d20000ff',    // Christmas red
                     sliceColor2: '#228b22',    // Forest green
-                    sliceColor3: '#ffffffff',    // Gold
+                    sliceColor3: '#ffffffff',    // White
                     primaryAccent: '#d20000ff',  // Red
-                    secondaryAccent: '#ffffffff', // Green
-                    highlightColor: '#ffffffff', // Gold
+                    secondaryAccent: '#ffffffff', // White
+                    highlightColor: '#ffffffff', // White
                     bgColor: '#0a1f0a',         // Dark green
-                    textColor: '#ffffff'        // White
+                    textColor: '#ffffff',        // White
+                    sliceTextColors: ['#ffffff', '#ffffff', '#000000']  // White on red, white on green, black on white
                 }
             },
             newyear: {
@@ -61,7 +64,8 @@ class SpinWheel {
                     secondaryAccent: '#c0c0c0', // Silver
                     highlightColor: '#ffffff', // White
                     bgColor: '#1a1a2e',         // Midnight blue
-                    textColor: '#ffffff'        // White
+                    textColor: '#ffffff',        // White
+                    sliceTextColors: ['#000000', '#000000', '#ffffff']  // Black on gold, black on silver, white on blue
                 }
             }
         };
@@ -540,6 +544,13 @@ class SpinWheel {
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
+            // Get text color for this slice
+            const sliceTextColors = this.customColors.sliceTextColors || ['#000000', '#000000', '#000000'];
+            const sliceTextColor = sliceTextColors[i % sliceTextColors.length];
+            // Use contrasting shadow color
+            const shadowColor = sliceTextColor === '#ffffff' || sliceTextColor === '#FFFFFF' 
+                ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)';
+            
             // Calculate font size and handle long text
             const maxTextRadius = radius * 0.55; // More padding from the edge
             let fontSize = Math.min(20, radius / (movie.length * 0.6));
@@ -576,15 +587,15 @@ class SpinWheel {
                     ctx.font = `bold ${fontSize}px Georgia`;
                 }
                 
-                ctx.fillStyle = '#000';
-                ctx.shadowColor = 'rgba(255,255,255,0.5)';
+                ctx.fillStyle = sliceTextColor;
+                ctx.shadowColor = shadowColor;
                 ctx.shadowBlur = 2;
                 ctx.fillText(line1, maxTextRadius, -fontSize * 0.6);
                 ctx.fillText(line2, maxTextRadius, fontSize * 0.6);
             } else {
                 // Single line text
-                ctx.fillStyle = '#000';
-                ctx.shadowColor = 'rgba(255,255,255,0.5)';
+                ctx.fillStyle = sliceTextColor;
+                ctx.shadowColor = shadowColor;
                 ctx.shadowBlur = 2;
                 ctx.fillText(movie, maxTextRadius, 0);
             }
