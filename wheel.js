@@ -491,11 +491,15 @@ class SpinWheel {
     updateMovieList() {
         const el = document.getElementById('movieList');
         el.innerHTML = '';
+        const sliceTextColors = this.customColors.sliceTextColors || ['#000000', '#000000', '#000000'];
         this.movies.forEach((m, i) => {
             const div = document.createElement('div');
             div.className = 'movie-item';
             div.style.background = i % 2 === 0 ? this.customColors.sliceColor1 : this.customColors.sliceColor2;
-            div.innerHTML = `<span>${m}</span><button onclick="wheel.removeMovie(${i})">Remove</button>`;
+            // Use matching text color for the slice background
+            const textColor = sliceTextColors[i % 2];  // Alternates between slice 1 and 2 text colors
+            div.style.color = textColor;
+            div.innerHTML = `<span>${m}</span><button onclick="wheel.removeMovie(${i})" style="color: ${textColor}">Remove</button>`;
             el.appendChild(div);
         });
     }
