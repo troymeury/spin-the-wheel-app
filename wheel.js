@@ -11,6 +11,9 @@ class SpinWheel {
 
         this.pendingWinnerIndex = null;
 
+        // S3 base URL for background images (replaced by deploy script)
+        this.s3BaseUrl = 'S3_BASE_URL_PLACEHOLDER';
+
         // Default colors
         this.defaultColors = {
             sliceColor1: '#c44800',
@@ -21,7 +24,8 @@ class SpinWheel {
             highlightColor: '#f3a61d',
             bgColor: '#000000',
             textColor: '#c44800',
-            sliceTextColors: ['#000000', '#000000', '#000000']  // Text color for each slice
+            sliceTextColors: ['#000000', '#000000', '#000000'],
+            bgImage: 'halloween-bg-1.png'
         };
 
         // Theme definitions
@@ -37,7 +41,8 @@ class SpinWheel {
                     highlightColor: '#f3a61d',
                     bgColor: '#000000',
                     textColor: '#c44800',
-                    sliceTextColors: ['#000000', '#000000', '#000000']
+                    sliceTextColors: ['#000000', '#000000', '#000000'],
+                    bgImage: 'halloween-bg-1.png'
                 }
             },
             christmas: {
@@ -51,7 +56,8 @@ class SpinWheel {
                     highlightColor: '#ffffffff', // White
                     bgColor: '#0a1f0a',         // Dark green
                     textColor: '#ffffff',        // White
-                    sliceTextColors: ['#ffffff', '#ffffff', '#000000']  // White on red, white on green, black on white
+                    sliceTextColors: ['#ffffff', '#ffffff', '#000000'],
+                    bgImage: 'christmas-bg-1.png'
                 }
             },
             newyear: {
@@ -65,7 +71,8 @@ class SpinWheel {
                     highlightColor: '#ffffff', // White
                     bgColor: '#1a1a2e',         // Midnight blue
                     textColor: '#ffffff',        // White
-                    sliceTextColors: ['#000000', '#000000', '#ffffff']  // Black on gold, black on silver, white on blue
+                    sliceTextColors: ['#000000', '#000000', '#ffffff'],
+                    bgImage: ''  // No background image for New Year's
                 }
             }
         };
@@ -205,8 +212,15 @@ class SpinWheel {
         // Update wheel slice colors array
         this.colors = [this.customColors.sliceColor1, this.customColors.sliceColor2, this.customColors.sliceColor3];
 
-        // Apply to body background
+        // Apply to body background color
         document.body.style.backgroundColor = this.customColors.bgColor;
+
+        // Apply background image if set
+        if (this.customColors.bgImage && this.s3BaseUrl && !this.s3BaseUrl.includes('PLACEHOLDER')) {
+            document.body.style.backgroundImage = `url('${this.s3BaseUrl}/${this.customColors.bgImage}')`;
+        } else if (!this.customColors.bgImage) {
+            document.body.style.backgroundImage = 'none';
+        }
 
         // Apply primary accent color to elements
         const primaryElements = [
