@@ -270,6 +270,103 @@ body {
     }
 }
 
+/* Theme Settings Panel */
+.theme-settings-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.theme-settings-toggle {
+    width: 100%;
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--primary-accent, #c44800);
+    border-radius: 10px;
+    color: var(--primary-accent, #c44800);
+    font-family: 'Metal Mania', serif;
+    font-size: 1.3em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.theme-settings-toggle:hover {
+    transform: scale(1.02);
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.theme-settings-panel {
+    display: none;
+    background: rgba(0, 0, 0, 0.85);
+    border: 2px solid var(--primary-accent, #c44800);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
+    animation: slideDown 0.3s ease-out;
+}
+
+.theme-settings-panel.open {
+    display: block;
+}
+
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.theme-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--secondary-accent, #e28c14);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.theme-btn:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--highlight-color, #f3a61d);
+}
+
+.theme-btn.active {
+    border-color: var(--highlight-color, #f3a61d);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 15px rgba(243, 166, 29, 0.3);
+}
+
+.theme-icon {
+    font-size: 2.5em;
+}
+
+.theme-name {
+    font-family: 'Metal Mania', serif;
+    font-size: 1.2em;
+    color: var(--highlight-color, #f3a61d);
+}
+
+.theme-preview {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.preview-color {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
 /* Color Settings Panel */
 .color-settings-container {
     max-width: 1200px;

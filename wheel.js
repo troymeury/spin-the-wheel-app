@@ -22,8 +22,49 @@ class SpinWheel {
             bgColor: '#000000'
         };
 
+        // Theme definitions
+        this.themes = {
+            halloween: {
+                name: 'Halloween',
+                colors: {
+                    sliceColor1: '#c44800',
+                    sliceColor2: '#e28c14',
+                    sliceColor3: '#e4720a',
+                    primaryAccent: '#c44800',
+                    secondaryAccent: '#e28c14',
+                    highlightColor: '#f3a61d',
+                    bgColor: '#000000'
+                }
+            },
+            christmas: {
+                name: 'Christmas',
+                colors: {
+                    sliceColor1: '#c41e3a',    // Christmas red
+                    sliceColor2: '#228b22',    // Forest green
+                    sliceColor3: '#ffd700',    // Gold
+                    primaryAccent: '#c41e3a',  // Red
+                    secondaryAccent: '#228b22', // Green
+                    highlightColor: '#ffd700', // Gold
+                    bgColor: '#0a1f0a'         // Dark green
+                }
+            },
+            newyear: {
+                name: 'New Year\'s Eve',
+                colors: {
+                    sliceColor1: '#ffd700',    // Gold
+                    sliceColor2: '#c0c0c0',    // Silver
+                    sliceColor3: '#4169e1',    // Royal blue
+                    primaryAccent: '#ffd700',  // Gold
+                    secondaryAccent: '#c0c0c0', // Silver
+                    highlightColor: '#ffffff', // White
+                    bgColor: '#1a1a2e'         // Midnight blue
+                }
+            }
+        };
+
         // Load saved colors or use defaults
         this.customColors = this.loadColors();
+        this.currentTheme = localStorage.getItem('wheelTheme') || null;
         this.colors = [this.customColors.sliceColor1, this.customColors.sliceColor2, this.customColors.sliceColor3];
         
         // Apply colors to CSS variables and elements
@@ -41,6 +82,7 @@ class SpinWheel {
         this.loadMovies();
         this.initEventListeners();
         this.initColorSettings();
+        this.initThemeSettings();
         this.draw();
         this.animate();
     }
@@ -238,9 +280,12 @@ class SpinWheel {
         resetBtn?.addEventListener('click', () => {
             if (confirm('Reset all colors to defaults?')) {
                 this.customColors = { ...this.defaultColors };
+                this.currentTheme = 'halloween'; // Default theme is Halloween
+                localStorage.setItem('wheelTheme', 'halloween');
                 this.saveColors();
                 this.applyColors();
                 this.updateColorInputs();
+                this.updateActiveThemeButton();
             }
         });
 
@@ -283,6 +328,57 @@ class SpinWheel {
         });
     }
 
+    initThemeSettings() {
+        const toggle = document.getElementById('themeSettingsToggle');
+        const panel = document.getElementById('themeSettingsPanel');
+        const arrow = document.getElementById('themeToggleArrow');
+        const themeButtons = document.querySelectorAll('.theme-btn');
+
+        // Toggle panel
+        toggle?.addEventListener('click', () => {
+            panel.classList.toggle('open');
+            arrow.classList.toggle('open');
+        });
+
+        // Theme button clicks
+        themeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const themeName = btn.dataset.theme;
+                this.applyTheme(themeName);
+            });
+        });
+
+        // Mark current theme as active
+        this.updateActiveThemeButton();
+    }
+
+    applyTheme(themeName) {
+        if (!this.themes[themeName]) return;
+
+        const theme = this.themes[themeName];
+        this.customColors = { ...theme.colors };
+        this.currentTheme = themeName;
+        
+        // Save theme and colors
+        localStorage.setItem('wheelTheme', themeName);
+        this.saveColors();
+        
+        // Apply and update UI
+        this.applyColors();
+        this.updateColorInputs();
+        this.updateActiveThemeButton();
+    }
+
+    updateActiveThemeButton() {
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        themeButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.theme === this.currentTheme) {
+                btn.classList.add('active');
+            }
+        });
+    }
+
     updateColorInputs() {
         Object.keys(this.customColors).forEach(colorKey => {
             const colorPicker = document.getElementById(colorKey);
@@ -298,6 +394,10 @@ class SpinWheel {
 
     updateColor(colorKey, value) {
         this.customColors[colorKey] = value;
+        // Clear theme when manually editing colors
+        this.currentTheme = null;
+        localStorage.removeItem('wheelTheme');
+        this.updateActiveThemeButton();
         this.saveColors();
         this.applyColors();
     }
