@@ -19,7 +19,8 @@ class SpinWheel {
             primaryAccent: '#c44800',
             secondaryAccent: '#e28c14',
             highlightColor: '#f3a61d',
-            bgColor: '#000000'
+            bgColor: '#000000',
+            textColor: '#c44800'
         };
 
         // Theme definitions
@@ -33,7 +34,8 @@ class SpinWheel {
                     primaryAccent: '#c44800',
                     secondaryAccent: '#e28c14',
                     highlightColor: '#f3a61d',
-                    bgColor: '#000000'
+                    bgColor: '#000000',
+                    textColor: '#c44800'
                 }
             },
             christmas: {
@@ -45,7 +47,8 @@ class SpinWheel {
                     primaryAccent: '#d20000ff',  // Red
                     secondaryAccent: '#ffffffff', // Green
                     highlightColor: '#ffffffff', // Gold
-                    bgColor: '#0a1f0a'         // Dark green
+                    bgColor: '#0a1f0a',         // Dark green
+                    textColor: '#ffffff'        // White
                 }
             },
             newyear: {
@@ -57,7 +60,8 @@ class SpinWheel {
                     primaryAccent: '#ffd700',  // Gold
                     secondaryAccent: '#c0c0c0', // Silver
                     highlightColor: '#ffffff', // White
-                    bgColor: '#1a1a2e'         // Midnight blue
+                    bgColor: '#1a1a2e',         // Midnight blue
+                    textColor: '#ffffff'        // White
                 }
             }
         };
@@ -192,6 +196,7 @@ class SpinWheel {
         root.style.setProperty('--slice-color-1', this.customColors.sliceColor1);
         root.style.setProperty('--slice-color-2', this.customColors.sliceColor2);
         root.style.setProperty('--slice-color-3', this.customColors.sliceColor3);
+        root.style.setProperty('--text-color', this.customColors.textColor);
 
         // Update wheel slice colors array
         this.colors = [this.customColors.sliceColor1, this.customColors.sliceColor2, this.customColors.sliceColor3];
@@ -229,8 +234,13 @@ class SpinWheel {
         const addInput = document.querySelector('.add-movie input');
         if (addInput) {
             addInput.style.borderColor = this.customColors.secondaryAccent;
-            addInput.style.color = this.customColors.secondaryAccent;
+            addInput.style.color = this.customColors.textColor;
         }
+
+        // Movie item Remove buttons
+        document.querySelectorAll('.movie-item button').forEach(btn => {
+            btn.style.color = this.customColors.textColor;
+        });
 
         // Add button
         const addBtn = document.getElementById('addMovieBtn');

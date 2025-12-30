@@ -8,6 +8,7 @@
     --slice-color-1: #c44800;
     --slice-color-2: #e28c14;
     --slice-color-3: #e4720a;
+    --text-color: #c44800;
 }
 
 * {
@@ -24,7 +25,7 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    color: #ffffff;
+    color: #c44800;
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
@@ -104,7 +105,7 @@ body {
 .movie-item button {
     padding: 5px 10px;
     background: #000;
-    color: #c44800;
+    color: var(--text-color, #c44800);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -128,13 +129,14 @@ body {
     border: 2px solid #e28c14;
     border-radius: 8px;
     background: rgba(0, 0, 0, 0.8);
-    color: #e28c14;
+    color: var(--text-color, #c44800);
     font-size: 1em;
     font-family: 'Georgia', serif;
 }
 
 .add-movie input::placeholder {
-    color: rgba(255, 140, 0, 0.5);
+    color: var(--text-color, #c44800);
+    opacity: 0.5;
 }
 
 .add-movie button {
