@@ -39,10 +39,10 @@ class SpinWheel {
             christmas: {
                 name: 'Christmas',
                 colors: {
-                    sliceColor1: '#c41e3a',    // Christmas red
+                    sliceColor1: '#d20000ff',    // Christmas red
                     sliceColor2: '#228b22',    // Forest green
                     sliceColor3: '#ffffffff',    // Gold
-                    primaryAccent: '#c41e3a',  // Red
+                    primaryAccent: '#d20000ff',  // Red
                     secondaryAccent: '#228b22', // Green
                     highlightColor: '#ffffffff', // Gold
                     bgColor: '#0a1f0a'         // Dark green
