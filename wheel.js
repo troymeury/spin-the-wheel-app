@@ -43,7 +43,7 @@ class SpinWheel {
                     sliceColor2: '#228b22',    // Forest green
                     sliceColor3: '#ffffffff',    // Gold
                     primaryAccent: '#d20000ff',  // Red
-                    secondaryAccent: '#228b22', // Green
+                    secondaryAccent: '#ffffffff', // Green
                     highlightColor: '#ffffffff', // Gold
                     bgColor: '#0a1f0a'         // Dark green
                 }
