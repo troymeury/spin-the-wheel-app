@@ -83,7 +83,7 @@ class SpinWheel {
         }
     }
 
-    // ----- Secure randomness -----
+    // ----- Secure randomness? -----
     secureRandomInt(n) {
         if (n <= 0) return 0;
         const co = (typeof window !== 'undefined') && window.crypto && window.crypto.getRandomValues ? window.crypto : null;
@@ -115,7 +115,7 @@ class SpinWheel {
         if (saved) {
             this.movies = JSON.parse(saved);
         } else {
-            this.movies = ['The Worst Witch','Winnie the Pooh Blood and Honey 2','Shaun of the Dead','Zombie Land','Scary Movie 1','Vampires suck','Zombeavers'];
+            this.movies = ['Peewees Christmas 1988','The Santa Claus','Die Hard','The Grinch','Planes, Trains, and Automobiles'];
             this.saveMovies();
         }
         this.updateMovieList();
@@ -303,7 +303,7 @@ class SpinWheel {
         ctx.restore();
     }
 
-    // ----- Unbiased spin with longer duration & longer slowdown -----
+    // Spinner logic
     spin() {
         if (this.spinning || this.movies.length === 0) return;
 
@@ -315,11 +315,11 @@ class SpinWheel {
         const n = this.movies.length;
         const sliceAngle = (2 * Math.PI) / n;
 
-        // Winner first (fair)
+        // Winner first
         const winnerIndex = this.secureRandomInt(n);
         this.pendingWinnerIndex = winnerIndex;
 
-        // Double the drama: twice the full revolutions (14..20)
+        // Wheel spins
         const fullSpins = (7 + this.secureRandomInt(4)) * 2;
 
         // Land safely within the winning slice with slight crypto jitter
@@ -347,7 +347,7 @@ class SpinWheel {
         this.spinStartTime = Date.now();
         this.spinDuration = 10000; // ms
 
-        // Store easing split so it's easy to tweak
+        // Easing
         this.accelFraction = 0.20; // ~2s accel
     }
 
