@@ -41,10 +41,10 @@ class SpinWheel {
                 colors: {
                     sliceColor1: '#c41e3a',    // Christmas red
                     sliceColor2: '#228b22',    // Forest green
-                    sliceColor3: '#ffd700',    // Gold
+                    sliceColor3: '#ffffffff',    // Gold
                     primaryAccent: '#c41e3a',  // Red
                     secondaryAccent: '#228b22', // Green
-                    highlightColor: '#ffd700', // Gold
+                    highlightColor: '#ffffffff', // Gold
                     bgColor: '#0a1f0a'         // Dark green
                 }
             },
