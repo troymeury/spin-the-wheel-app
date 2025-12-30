@@ -11,7 +11,23 @@ class SpinWheel {
 
         this.pendingWinnerIndex = null;
 
-        this.colors = ['#c44800', '#e28c14', '#e4720a'];
+        // Default colors
+        this.defaultColors = {
+            sliceColor1: '#c44800',
+            sliceColor2: '#e28c14',
+            sliceColor3: '#e4720a',
+            primaryAccent: '#c44800',
+            secondaryAccent: '#e28c14',
+            highlightColor: '#f3a61d',
+            bgColor: '#000000'
+        };
+
+        // Load saved colors or use defaults
+        this.customColors = this.loadColors();
+        this.colors = [this.customColors.sliceColor1, this.customColors.sliceColor2, this.customColors.sliceColor3];
+        
+        // Apply colors to CSS variables and elements
+        this.applyColors();
         
         // Click sound properties
         this.numDots = 24;
@@ -24,6 +40,7 @@ class SpinWheel {
 
         this.loadMovies();
         this.initEventListeners();
+        this.initColorSettings();
         this.draw();
         this.animate();
     }
@@ -109,6 +126,215 @@ class SpinWheel {
         document.getElementById('clearBtn').addEventListener('click', () => this.clearAll());
     }
 
+    // ----- Color Management -----
+    loadColors() {
+        const saved = localStorage.getItem('wheelColors');
+        if (saved) {
+            return { ...this.defaultColors, ...JSON.parse(saved) };
+        }
+        return { ...this.defaultColors };
+    }
+
+    saveColors() {
+        localStorage.setItem('wheelColors', JSON.stringify(this.customColors));
+    }
+
+    applyColors() {
+        const root = document.documentElement;
+        
+        // Set CSS variables for dynamic styling
+        root.style.setProperty('--primary-accent', this.customColors.primaryAccent);
+        root.style.setProperty('--secondary-accent', this.customColors.secondaryAccent);
+        root.style.setProperty('--highlight-color', this.customColors.highlightColor);
+        root.style.setProperty('--bg-color', this.customColors.bgColor);
+        root.style.setProperty('--slice-color-1', this.customColors.sliceColor1);
+        root.style.setProperty('--slice-color-2', this.customColors.sliceColor2);
+        root.style.setProperty('--slice-color-3', this.customColors.sliceColor3);
+
+        // Update wheel slice colors array
+        this.colors = [this.customColors.sliceColor1, this.customColors.sliceColor2, this.customColors.sliceColor3];
+
+        // Apply to body background
+        document.body.style.backgroundColor = this.customColors.bgColor;
+
+        // Apply primary accent color to elements
+        const primaryElements = [
+            '.main-content',
+            '.color-settings-toggle',
+            '.color-settings-panel',
+            '.movie-item button',
+            '.add-movie input',
+            '.spin-button',
+            '.result',
+            '.movie-list::-webkit-scrollbar-thumb'
+        ];
+        
+        // Title and highlight elements
+        document.querySelectorAll('.title, .left-panel h2').forEach(el => {
+            el.style.color = this.customColors.highlightColor;
+        });
+
+        // Main content border
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            mainContent.style.borderColor = this.customColors.primaryAccent;
+        }
+
+        // Body text color
+        document.body.style.color = this.customColors.primaryAccent;
+
+        // Input styling
+        const addInput = document.querySelector('.add-movie input');
+        if (addInput) {
+            addInput.style.borderColor = this.customColors.secondaryAccent;
+            addInput.style.color = this.customColors.secondaryAccent;
+        }
+
+        // Add button
+        const addBtn = document.getElementById('addMovieBtn');
+        if (addBtn) {
+            addBtn.style.backgroundColor = this.customColors.secondaryAccent;
+        }
+
+        // Spin button
+        const spinBtn = document.getElementById('spinBtn');
+        if (spinBtn) {
+            spinBtn.style.backgroundColor = this.customColors.primaryAccent;
+        }
+
+        // Clear button
+        const clearBtn = document.getElementById('clearBtn');
+        if (clearBtn) {
+            clearBtn.style.backgroundColor = this.customColors.highlightColor;
+        }
+
+        // Result box
+        const result = document.getElementById('result');
+        if (result) {
+            result.style.color = this.customColors.primaryAccent;
+            result.style.borderColor = this.customColors.primaryAccent;
+        }
+
+        // Update movie list colors
+        this.updateMovieList();
+        
+        // Redraw the wheel
+        this.draw();
+    }
+
+    initColorSettings() {
+        const toggle = document.getElementById('colorSettingsToggle');
+        const panel = document.getElementById('colorSettingsPanel');
+        const arrow = document.getElementById('toggleArrow');
+        const resetBtn = document.getElementById('resetColorsBtn');
+
+        // Toggle panel
+        toggle?.addEventListener('click', () => {
+            panel.classList.toggle('open');
+            arrow.classList.toggle('open');
+        });
+
+        // Reset colors
+        resetBtn?.addEventListener('click', () => {
+            if (confirm('Reset all colors to defaults?')) {
+                this.customColors = { ...this.defaultColors };
+                this.saveColors();
+                this.applyColors();
+                this.updateColorInputs();
+            }
+        });
+
+        // Initialize color inputs
+        this.updateColorInputs();
+
+        // Add event listeners to all color inputs
+        Object.keys(this.defaultColors).forEach(colorKey => {
+            const colorPicker = document.getElementById(colorKey);
+            const hexInput = document.getElementById(colorKey + 'Hex');
+            const rgbInput = document.getElementById(colorKey + 'Rgb');
+
+            // Color picker change
+            colorPicker?.addEventListener('input', (e) => {
+                this.updateColor(colorKey, e.target.value);
+                if (hexInput) hexInput.value = e.target.value;
+                if (rgbInput) rgbInput.value = this.hexToRgb(e.target.value);
+            });
+
+            // Hex input change
+            hexInput?.addEventListener('change', (e) => {
+                const hex = this.normalizeHex(e.target.value);
+                if (hex) {
+                    this.updateColor(colorKey, hex);
+                    if (colorPicker) colorPicker.value = hex;
+                    if (rgbInput) rgbInput.value = this.hexToRgb(hex);
+                    e.target.value = hex;
+                }
+            });
+
+            // RGB input change
+            rgbInput?.addEventListener('change', (e) => {
+                const hex = this.rgbToHex(e.target.value);
+                if (hex) {
+                    this.updateColor(colorKey, hex);
+                    if (colorPicker) colorPicker.value = hex;
+                    if (hexInput) hexInput.value = hex;
+                }
+            });
+        });
+    }
+
+    updateColorInputs() {
+        Object.keys(this.customColors).forEach(colorKey => {
+            const colorPicker = document.getElementById(colorKey);
+            const hexInput = document.getElementById(colorKey + 'Hex');
+            const rgbInput = document.getElementById(colorKey + 'Rgb');
+            const color = this.customColors[colorKey];
+
+            if (colorPicker) colorPicker.value = color;
+            if (hexInput) hexInput.value = color;
+            if (rgbInput) rgbInput.value = this.hexToRgb(color);
+        });
+    }
+
+    updateColor(colorKey, value) {
+        this.customColors[colorKey] = value;
+        this.saveColors();
+        this.applyColors();
+    }
+
+    // Color conversion utilities
+    hexToRgb(hex) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        if (result) {
+            return `rgb(${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)})`;
+        }
+        return '';
+    }
+
+    rgbToHex(rgb) {
+        const match = rgb.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+        if (match) {
+            const r = parseInt(match[1]).toString(16).padStart(2, '0');
+            const g = parseInt(match[2]).toString(16).padStart(2, '0');
+            const b = parseInt(match[3]).toString(16).padStart(2, '0');
+            return `#${r}${g}${b}`;
+        }
+        return null;
+    }
+
+    normalizeHex(input) {
+        let hex = input.trim();
+        if (!hex.startsWith('#')) hex = '#' + hex;
+        if (/^#[a-f\d]{3}$/i.test(hex)) {
+            // Expand shorthand (e.g., #abc -> #aabbcc)
+            hex = '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
+        }
+        if (/^#[a-f\d]{6}$/i.test(hex)) {
+            return hex.toLowerCase();
+        }
+        return null;
+    }
+
     saveMovies() { localStorage.setItem('halloweenMovies', JSON.stringify(this.movies)); }
     loadMovies() {
         const saved = localStorage.getItem('halloweenMovies');
@@ -154,7 +380,7 @@ class SpinWheel {
         this.movies.forEach((m, i) => {
             const div = document.createElement('div');
             div.className = 'movie-item';
-            div.style.background = i % 2 === 0 ? '#c44800' : '#e28c14';
+            div.style.background = i % 2 === 0 ? this.customColors.sliceColor1 : this.customColors.sliceColor2;
             div.innerHTML = `<span>${m}</span><button onclick="wheel.removeMovie(${i})">Remove</button>`;
             el.appendChild(div);
         });
@@ -173,7 +399,7 @@ class SpinWheel {
         if (this.movies.length === 0) {
             ctx.save();
             ctx.font = 'bold 24px Georgia';
-            ctx.fillStyle = '#c44800';
+            ctx.fillStyle = this.customColors.primaryAccent;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText('Add movies to spin!', cx, cy);
@@ -270,14 +496,14 @@ class SpinWheel {
             const dy = cy + (radius + border / 2) * Math.sin(a);
             ctx.beginPath();
             ctx.arc(dx, dy, 4, 0, 2 * Math.PI);
-            ctx.fillStyle = '#c44800';
+            ctx.fillStyle = this.customColors.primaryAccent;
             ctx.fill();
         }
 
         // Thin outer border
         ctx.beginPath();
         ctx.arc(cx, cy, radius + border, 0, 2 * Math.PI);
-        ctx.strokeStyle = '#e28c14';
+        ctx.strokeStyle = this.customColors.secondaryAccent;
         ctx.lineWidth = 3;
         ctx.stroke();
 
@@ -295,7 +521,7 @@ class SpinWheel {
         ctx.lineTo(-20, -radius - 40);
         ctx.lineTo(20, -radius - 40);
         ctx.closePath();
-        ctx.fillStyle = '#e4720a';
+        ctx.fillStyle = this.customColors.sliceColor3;
         ctx.fill();
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 2;

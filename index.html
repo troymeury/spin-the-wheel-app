@@ -33,6 +33,85 @@
         </div>
     </div>
     
+    <!-- Color Settings Panel -->
+    <div class="color-settings-container">
+        <button class="color-settings-toggle" id="colorSettingsToggle">
+            <span class="toggle-icon">🎨</span> Color Settings <span class="toggle-arrow" id="toggleArrow">▼</span>
+        </button>
+        <div class="color-settings-panel" id="colorSettingsPanel">
+            <div class="color-settings-grid">
+                <div class="color-group">
+                    <h3>Wheel Slice Colors</h3>
+                    <div class="color-row">
+                        <label>Slice Color 1</label>
+                        <div class="color-inputs">
+                            <input type="color" id="sliceColor1" data-color-key="sliceColor1">
+                            <input type="text" id="sliceColor1Hex" placeholder="#c44800" maxlength="7">
+                            <input type="text" id="sliceColor1Rgb" placeholder="rgb(196,72,0)" maxlength="20">
+                        </div>
+                    </div>
+                    <div class="color-row">
+                        <label>Slice Color 2</label>
+                        <div class="color-inputs">
+                            <input type="color" id="sliceColor2" data-color-key="sliceColor2">
+                            <input type="text" id="sliceColor2Hex" placeholder="#e28c14" maxlength="7">
+                            <input type="text" id="sliceColor2Rgb" placeholder="rgb(226,140,20)" maxlength="20">
+                        </div>
+                    </div>
+                    <div class="color-row">
+                        <label>Slice Color 3</label>
+                        <div class="color-inputs">
+                            <input type="color" id="sliceColor3" data-color-key="sliceColor3">
+                            <input type="text" id="sliceColor3Hex" placeholder="#e4720a" maxlength="7">
+                            <input type="text" id="sliceColor3Rgb" placeholder="rgb(228,114,10)" maxlength="20">
+                        </div>
+                    </div>
+                </div>
+                <div class="color-group">
+                    <h3>Accent Colors</h3>
+                    <div class="color-row">
+                        <label>Primary Accent</label>
+                        <div class="color-inputs">
+                            <input type="color" id="primaryAccent" data-color-key="primaryAccent">
+                            <input type="text" id="primaryAccentHex" placeholder="#c44800" maxlength="7">
+                            <input type="text" id="primaryAccentRgb" placeholder="rgb(196,72,0)" maxlength="20">
+                        </div>
+                    </div>
+                    <div class="color-row">
+                        <label>Secondary Accent</label>
+                        <div class="color-inputs">
+                            <input type="color" id="secondaryAccent" data-color-key="secondaryAccent">
+                            <input type="text" id="secondaryAccentHex" placeholder="#e28c14" maxlength="7">
+                            <input type="text" id="secondaryAccentRgb" placeholder="rgb(226,140,20)" maxlength="20">
+                        </div>
+                    </div>
+                    <div class="color-row">
+                        <label>Highlight / Title</label>
+                        <div class="color-inputs">
+                            <input type="color" id="highlightColor" data-color-key="highlightColor">
+                            <input type="text" id="highlightColorHex" placeholder="#f3a61d" maxlength="7">
+                            <input type="text" id="highlightColorRgb" placeholder="rgb(243,166,29)" maxlength="20">
+                        </div>
+                    </div>
+                </div>
+                <div class="color-group">
+                    <h3>Background</h3>
+                    <div class="color-row">
+                        <label>Page Background</label>
+                        <div class="color-inputs">
+                            <input type="color" id="bgColor" data-color-key="bgColor">
+                            <input type="text" id="bgColorHex" placeholder="#000000" maxlength="7">
+                            <input type="text" id="bgColorRgb" placeholder="rgb(0,0,0)" maxlength="20">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="color-actions">
+                <button id="resetColorsBtn" class="reset-colors-btn">Reset to Defaults</button>
+            </div>
+        </div>
+    </div>
+
     <script src="wheel.js"></script>
 </body>
 </html>

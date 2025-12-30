@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap');
 
+:root {
+    --primary-accent: #c44800;
+    --secondary-accent: #e28c14;
+    --highlight-color: #f3a61d;
+    --bg-color: #000000;
+    --slice-color-1: #c44800;
+    --slice-color-2: #e28c14;
+    --slice-color-3: #e4720a;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -224,12 +234,12 @@ body {
 }
 
 .movie-list::-webkit-scrollbar-thumb {
-    background: #c44800;
+    background: var(--primary-accent, #c44800);
     border-radius: 5px;
 }
 
 .movie-list::-webkit-scrollbar-thumb:hover {
-    background: #ff6600;
+    background: var(--secondary-accent, #ff6600);
 }
 
 @media (max-width: 1200px) {
@@ -257,5 +267,191 @@ body {
         height: 90vw;
         max-width: 500px;
         max-height: 500px;
+    }
+}
+
+/* Color Settings Panel */
+.color-settings-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.color-settings-toggle {
+    width: 100%;
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--primary-accent, #c44800);
+    border-radius: 10px;
+    color: var(--primary-accent, #c44800);
+    font-family: 'Metal Mania', serif;
+    font-size: 1.3em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.color-settings-toggle:hover {
+    transform: scale(1.02);
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.toggle-icon {
+    font-size: 1.2em;
+}
+
+.toggle-arrow {
+    transition: transform 0.3s;
+}
+
+.toggle-arrow.open {
+    transform: rotate(180deg);
+}
+
+.color-settings-panel {
+    display: none;
+    background: rgba(0, 0, 0, 0.85);
+    border: 2px solid var(--primary-accent, #c44800);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
+    animation: slideDown 0.3s ease-out;
+}
+
+.color-settings-panel.open {
+    display: block;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.color-settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.color-group {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.color-group h3 {
+    font-family: 'Metal Mania', serif;
+    color: var(--highlight-color, #f3a61d);
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    text-align: center;
+    border-bottom: 1px solid var(--primary-accent, #c44800);
+    padding-bottom: 10px;
+}
+
+.color-row {
+    margin-bottom: 15px;
+}
+
+.color-row label {
+    display: block;
+    color: var(--secondary-accent, #e28c14);
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+.color-inputs {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.color-inputs input[type="color"] {
+    width: 50px;
+    height: 40px;
+    border: 2px solid var(--primary-accent, #c44800);
+    border-radius: 6px;
+    cursor: pointer;
+    background: transparent;
+    padding: 2px;
+}
+
+.color-inputs input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 2px;
+}
+
+.color-inputs input[type="color"]::-webkit-color-swatch {
+    border-radius: 4px;
+    border: none;
+}
+
+.color-inputs input[type="text"] {
+    flex: 1;
+    min-width: 90px;
+    padding: 8px 10px;
+    border: 2px solid var(--primary-accent, #c44800);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--secondary-accent, #e28c14);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.color-inputs input[type="text"]::placeholder {
+    color: rgba(226, 140, 20, 0.4);
+}
+
+.color-inputs input[type="text"]:focus {
+    outline: none;
+    border-color: var(--highlight-color, #f3a61d);
+}
+
+.color-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.reset-colors-btn {
+    padding: 12px 25px;
+    background: var(--highlight-color, #f3a61d);
+    color: #000;
+    border: 2px solid #000;
+    border-radius: 8px;
+    font-family: 'Georgia', serif;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.reset-colors-btn:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .color-settings-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .color-inputs {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .color-inputs input[type="color"] {
+        width: 100%;
     }
 }
